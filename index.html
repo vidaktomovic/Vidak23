@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GPS Photo Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .gallery-item {
+      width: 180px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>GPS Photo Tracker</h1>
+  <button onclick="captureAndUpload()">Capture & Upload</button>
+  <h2>Gallery</h2>
+  <div id="gallery"></div>
+
+  <script>
+    async function captureAndUpload() {
+      // Capture photo using the device camera
+      const video = document.createElement('video');
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      await video.play();
+
+      // Create a canvas to capture the photo
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const photoData = canvas.toDataURL('image/png');
+
+      // Stop the video stream
+      stream.getTracks().forEach(track => track.stop());
+
+      // Get geolocation
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const data = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          accuracy: position.coords.accuracy,
+          photo: photoData,
+          timestamp: new Date().toISOString()
+        };
+
+        // Send data to the server
+        await fetch('/log', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        // Refresh the gallery
+        loadGallery();
+      });
+    }
+
+    function loadGallery() {
+      fetch('/log.csv')
+        .then(response => response.text())
+        .then(data => {
+          const gallery = document.getElementById('gallery');
+          gallery.innerHTML = '';
+          const lines = data.trim().split('\n');
+          lines.forEach(line => {
+            const [timestamp, latitude, longitude, accuracy, filename] = line.split(',');
+            const img = document.createElement('img');
+            img.src = filename;
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+            div.appendChild(img);
+            gallery.appendChild(div);
+          });
+        });
+    }
+
+    // Load the gallery on page load
+    window.onload = loadGallery;
+  </script>
+</body>
+</html>
