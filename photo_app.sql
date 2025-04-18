@@ -1,0 +1,10 @@
+CREATE DATABASE photo_app;
+USE photo_app;
+
+CREATE TABLE photos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  image LONGBLOB NOT NULL,
+  latitude DECIMAL(9,6),
+  longitude DECIMAL(9,6),
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
