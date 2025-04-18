@@ -5,15 +5,16 @@
   <title>Luuuuudilooo</title>
 
   <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2X2TKDJHXL"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    function gtag(){dataLayer.push(arguments);}  
+    gtag('js', new Date());  
     gtag('config', 'G-XXXXXXXXXX');
   </script>
   <!-- End Google Analytics -->
 
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Press Start 2P', cursive;
@@ -25,39 +26,30 @@
       animation: gradientBG 20s ease infinite;
       color: #fff;
     }
-
     @keyframes gradientBG {
       0% {background-position: 0% 50%;}
       50% {background-position: 100% 50%;}
       100% {background-position: 0% 50%;}
     }
-
-    #container {
-      margin-top: 50px;
-    }
+    #container { margin-top: 50px; }
 
     #userImage {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
+      width: 150px; height: 150px;
+      border-radius: 50%; object-fit: cover;
       margin-bottom: 20px;
       border: 5px solid #fff;
       box-shadow: 0 0 20px #fff;
     }
-
     #status {
       margin-top: 20px;
       font-size: 16px;
       color: #fff;
     }
-
     #preview {
       margin-top: 20px;
       border: 5px solid #fff;
       display: none;
     }
-
     #continueButton {
       margin-top: 20px;
       padding: 10px 20px;
@@ -69,28 +61,19 @@
       cursor: pointer;
       box-shadow: 0 4px #d94f4f;
     }
-
-    #continueButton:hover {
-      background-color: #ff3b2e;
-    }
-
-    canvas {
-      display: none;
-    }
+    #continueButton:hover { background-color: #ff3b2e; }
+    canvas { display: none; }
   </style>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="container">
-    <!-- Display your image -->
-    <img id="userImage" src="cat.png.png" alt="Your Image" />
+    <img id="userImage" src="cat.png" alt="Your Image" />
     <div id="status">Click "Continue" to start.</div>
     <button id="continueButton">Continue</button>
     <canvas id="canvas" width="320" height="240"></canvas>
     <img id="preview" width="320" height="240" alt="Captured photo" />
+    <p><a href="/gallery" style="color:#fff; text-decoration:underline;">View Gallery</a></p>
   </div>
-
-  <!-- Include the JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
