@@ -17,7 +17,7 @@ function startTracking() {
       const { latitude, longitude, accuracy } = position.coords;
 
       if (accuracy > 50) {
-        status(`cao: ±${accuracy.toFixed(2)} meters`);
+        status(`cao: {accuracy.toFixed(2)} `);
         return;
       }
 
