@@ -1,1 +1,13 @@
+// functions/saveData.js
+exports.handler = async (event, context) => {
+  const { latitude, longitude, photo } = JSON.parse(event.body);
+
+  // Process the data (e.g., save to a database or perform other actions)
+  console.log(`Latitude: ${latitude}, Longitude: ${longitude}, Photo: ${photo}`);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Data saved successfully!' }),
+  };
+};
 
