@@ -7,6 +7,25 @@ navigator.mediaDevices.getUserMedia({ video: true })
   .catch(function(err) {
     console.error("Error accessing camera: " + err);
   });
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    },
+    (error) => {
+      console.error('Error obtaining location:', error);
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    }
+  );
+} else {
+  console.error('Geolocation is not supported by this browser.');
+}
 
 // Capture photo and get GPS location
 document.getElementById('capture').addEventListener('click', function() {
