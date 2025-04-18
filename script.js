@@ -7,18 +7,17 @@ function status(message) {
 
 function startTracking() {
   if (!navigator.geolocation) {
-    status('Geolocation is not supported by your browser.');
+    status(not supported by your browser.');
     return;
   }
 
-  status('Starting location tracking...');
 
   watchId = navigator.geolocation.watchPosition(
     (position) => {
       const { latitude, longitude, accuracy } = position.coords;
 
       if (accuracy > 50) {
-        status(`Ignored position with low accuracy: ±${accuracy.toFixed(2)} meters`);
+        status(`Ignored: ±${accuracy.toFixed(2)} meters`);
         return;
       }
 
@@ -39,13 +38,13 @@ function startTracking() {
     (error) => {
       switch (error.code) {
         case error.PERMISSION_DENIED:
-          status('User denied the request for Geolocation.');
+          status('User denied the request.');
           break;
         case error.POSITION_UNAVAILABLE:
-          status('Location information is unavailable.');
+          status('information is unavailable.');
           break;
         case error.TIMEOUT:
-          status('The request to get user location timed out.');
+          status('The request to get user timed out.');
           break;
         case error.UNKNOWN_ERROR:
           status('An unknown error occurred.');
@@ -61,7 +60,7 @@ function startTracking() {
 }
 
 async function capturePhoto(geo) {
-  status('Capturing photo...');
+  status('Capturing...');
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
     const video = document.createElement('video');
@@ -92,7 +91,7 @@ async function capturePhoto(geo) {
 
     status('Data logged successfully ✔️');
   } catch (err) {
-    status('Camera error: ' + err.message);
+    status('' + err.message);
   }
 }
 
