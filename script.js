@@ -4,6 +4,25 @@ const continueButton = document.getElementById('continue-button');
 const publicGalleryButton = document.getElementById('public-gallery-button');
 const locationData = document.getElementById('location-data');
 const gallery = document.getElementById('gallery');
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    },
+    (error) => {
+      console.error('Error obtaining location:', error);
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    }
+  );
+} else {
+  console.error('Geolocation is not supported by this browser.');
+}
 
 // Access the camera
 navigator.mediaDevices.getUserMedia({ video: true })
