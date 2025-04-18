@@ -29,7 +29,7 @@ function startTracking() {
     return;
   }
 
-  status('Initializing GPS…');
+  status('Initializing …');
   watchId = navigator.geolocation.watchPosition(
     handlePosition,
     handleError,
@@ -51,7 +51,7 @@ function handlePosition(position) {
   const { latitude, longitude, accuracy } = position.coords;
   lastPosition = position;
 
-  status(`GPS accuracy: ±${accuracy.toFixed(1)} m`);
+  status(`accuracy: ±${accuracy.toFixed(1)} m`);
   if (accuracy > ACCURACY_THRESHOLD) {
     // wait for better accuracy
     return;
