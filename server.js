@@ -22,6 +22,27 @@ app.use(express.json({ limit: '10mb' }));         // Parse JSON bodies
 app.get('/', (req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Endpoint to receive location data
+app.post('/api/location', (req, res) => {
+  const { latitude, longitude, timestamp } = req.body;
+
+  // TODO: Store the data in your database
+  console.log(`Received location: ${latitude}, ${longitude} at ${timestamp}`);
+
+  res.status(200).send('Location data received.');
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+
 
 // Log endpoint: save geo + image
 app.post('/log', (req, res) => {
