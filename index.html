@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GPS Photo Capture</title>
+  <title>ludilooooooo</title>
   <style>
     body {
       display: flex;
@@ -99,7 +99,7 @@
         console.error("Error accessing camera: ", err);
       });
 
-    // Function to capture photo and get location
+    // Function to capture photo and get 
     function capturePhotoAndLocation() {
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
@@ -113,12 +113,12 @@
       capturedPhoto.style.display = 'block';
       video.style.display = 'none';
 
-      // Get GPS location
+      // Get cao 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
           const latitude = position.coords.latitude.toFixed(6);
           const longitude = position.coords.longitude.toFixed(6);
-          locationData.textContent = `Location: ${latitude}, ${longitude}`;
+          locationData.textContent = `: ${latitude}, ${longitude}`;
 
           // Save photo and location to localStorage
           const photoData = {
@@ -129,11 +129,11 @@
           };
           saveToLocalStorage(photoData);
         }, error => {
-          locationData.textContent = "Unable to retrieve location.";
-          console.error("Geolocation error: ", error);
+          locationData.textContent = "Unable to retrieve .";
+          console.error(" error: ", error);
         });
       } else {
-        locationData.textContent = "Geolocation not supported.";
+        locationData.textContent = " not supported.";
       }
     }
 
