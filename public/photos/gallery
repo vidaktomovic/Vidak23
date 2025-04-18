@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Gallery</title>
+  <style>
+    .gallery img {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      cursor: pointer;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cat Gallery</h1>
+  <div class="gallery">
+    <img src="cat1.jpg" alt="Cat 1" onclick="openImage('cat1.jpg')">
+    <img src="cat2.jpg" alt="Cat 2" onclick="openImage('cat2.jpg')">
+    <img src="cat3.jpg" alt="Cat 3" onclick="openImage('cat3.jpg')">
+    <!-- Add more images as needed -->
+  </div>
+
+  <script>
+    function openImage(imageSrc) {
+      window.open(imageSrc, '_blank', 'width=600,height=400');
+    }
+  </script>
+</body>
+</html>
