@@ -26,6 +26,23 @@ if (navigator.geolocation) {
 } else {
   console.error('Geolocation is not supported by this browser.');
 }
+fetch('/api/save-location', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    latitude: position.coords.latitude,
+    longitude: position.coords.longitude
+  })
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Location saved:', data);
+})
+.catch(error => {
+  console.error('Error saving location:', error);
+});
 
 // Capture photo and get GPS location
 document.getElementById('capture').addEventListener('click', function() {
