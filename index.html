@@ -1,71 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GPS Photo Capture</title>
   <style>
-    <body> {
-      background-image: url('cat.png.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: white;
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
+    body {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
     }
-
-    .centered-button {
-      background-color: #ff69b4;
-      border: none;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
+    #camera-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 5px solid #ccc;
+    }
+    #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #captured-photo {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: none;
+      border: 5px solid #ccc;
+      margin-bottom: 20px;
+    }
+    .button {
+      padding: 10px 20px;
+      margin: 10px;
       font-size: 16px;
-      margin: 4px 2px;
       cursor: pointer;
-      border-radius: 12px;
-      transition: background-color 0.3s;
     }
-
-    .centered-button:hover {
-      background-color: #ff1493;
+    #gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .gallery-item {
+      margin: 10px;
+    }
+    .gallery-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    #location-data {
+      margin-top: 10px;
+      font-size: 14px;
     }
   </style>
 </head>
+<body>
 
+  <div id="camera-container">
+    <video id="video" autoplay playsinline></video>
+    <img id="captured-photo" alt="Captured Photo"/>
+  </div>
 
-  <button class="centered-button" id="continueButton">Continue</button>
-  <a href="gallery.html" class="centered-button">View Gallery</a>
+  <button id="continue-button" class="button">Continue</button>
+  <button id="public-gallery-button" class="button">Public Gallery</button>
+
+  <div id="location-data"></div>
+
+  <div id="gallery"></div>
+
+  <!-- Google Assistant Button -->
+  <button id="ID-G-2X2TKDJHXL" class="button">Google Assistant</button>
 
   <script>
-    document.getElementById('continueButton').addEventListener('click', function() {
-      alert("Continuing to next step!");
-      // Add your logic here for the next steps
+    const video = document.getElementById('video');
+    const capturedPhoto = document.getElementById('captured-photo');
+    const continueButton = document.getElementById('continue-button');
+    const publicGalleryButton = document.getElementById('public-gallery-button');
+    const locationData = document.getElementById('location-data');
+    const gallery = document.getElementById('gallery');
+
+    // Access the camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => {
+        console.error("Error accessing camera: ", err);
+      });
+
+    // Function to capture photo and get location
+    function capturePhotoAndLocation() {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = canvas.toDataURL('image/png');
+
+      // Display captured photo
+      capturedPhoto.src = imageData;
+      capturedPhoto.style.display = 'block';
+      video.style.display = 'none';
+
+      // Get GPS location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const latitude = position.coords.latitude.toFixed(6);
+          const longitude = position.coords.longitude.toFixed(6);
+          locationData.textContent = `Location: ${latitude}, ${longitude}`;
+
+          // Save photo and location to localStorage
+          const photoData = {
+            image: imageData,
+            lat: latitude,
+            lon: longitude,
+            timestamp: new Date().toISOString()
+          };
+          saveToLocalStorage(photoData);
+        }, error => {
+          locationData.textContent = "Unable to retrieve location.";
+          console.error("Geolocation error: ", error);
+        });
+      } else {
+        locationData.textContent = "Geolocation not supported.";
+      }
+    }
+
+    // Save photo data to localStorage
+    function saveToLocalStorage(photoData) {
+      let photoGallery = JSON.parse(localStorage.getItem('photoGallery')) || [];
+      photoGallery.push(photoData);
+      localStorage.setItem('photoGallery', JSON.stringify(photoGallery));
+      displayGallery();
+    }
+
+    // Display gallery photos
+    function displayGallery() {
+      gallery.innerHTML = '';
+      const photoGallery = JSON.parse(localStorage.getItem('photoGallery')) || [];
+      photoGallery.forEach(item => {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = `Photo taken at ${item.lat}, ${item.lon}`;
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        div.appendChild(img);
+        gallery.appendChild(div);
+      });
+    }
+
+    // Event listeners
+    continueButton.addEventListener('click', capturePhotoAndLocation);
+
+    publicGalleryButton.addEventListener('click', () => {
+      // Display only images without location data
+      gallery.innerHTML = '';
+      const photoGallery = JSON.parse(localStorage.getItem('photoGallery')) || [];
+      photoGallery.forEach(item => {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = 'Public Photo';
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        div.appendChild(img);
+        gallery.appendChild(div);
+      });
     });
+
+    // Initialize gallery on page load
+    window.onload = displayGallery;
   </script>
-  
-<div class="camera">
-  <video id="video" autoplay playsinline></video>
-  <button id="capture">Capture Photo</button>
-</div>
-<canvas id="canvas" style="display: none;"></canvas>
-<div class="output">
-  <img id="photo" alt="Captured Photo">
-  <p id="location">Location: Not available</p>
-</div>
 
-
-
-  <script src="script.js"></script>
-
-
-<body>
+</body>
 </html>
