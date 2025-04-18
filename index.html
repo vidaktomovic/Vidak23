@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gallery</title>
   <style>
-    body {
+    <body> {
       background-image: url('cat.png.png');
       background-size: cover;
       background-position: center;
@@ -40,7 +40,7 @@
     }
   </style>
 </head>
-<body>
+
 
   <button class="centered-button" id="continueButton">Continue</button>
   <a href="gallery.html" class="centered-button">View Gallery</a>
@@ -51,11 +51,21 @@
       // Add your logic here for the next steps
     });
   </script>
+  
+<div class="camera">
+  <video id="video" autoplay playsinline></video>
+  <button id="capture">Capture Photo</button>
+</div>
+<canvas id="canvas" style="display: none;"></canvas>
+<div class="output">
+  <img id="photo" alt="Captured Photo">
+  <p id="location">Location: Not available</p>
+</div>
 
 
 
   <script src="script.js"></script>
 
 
-</body>
+<body>
 </html>
