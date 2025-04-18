@@ -7,7 +7,7 @@ function status(message) {
 
 function startTracking() {
   if (!navigator.geolocation) {
-    status(not supported by your browser.');
+    ;
     return;
   }
 
@@ -17,7 +17,7 @@ function startTracking() {
       const { latitude, longitude, accuracy } = position.coords;
 
       if (accuracy > 50) {
-        status(`Ignored: ±${accuracy.toFixed(2)} meters`);
+        status(`cao: ±${accuracy.toFixed(2)} meters`);
         return;
       }
 
@@ -31,20 +31,20 @@ function startTracking() {
       }
 
       lastPosition = { latitude, longitude };
-      status(`Location acquired: Lat ${latitude.toFixed(6)}, Lon ${longitude.toFixed(6)}, Accuracy: ±${accuracy.toFixed(2)} meters`);
+      status(`zajeb: Lat ${latitude.toFixed(6)}, Lon ${longitude.toFixed(6)}, Accuracy: ±${accuracy.toFixed(2)} meters`);
 
       capturePhoto({ latitude, longitude, accuracy });
     },
     (error) => {
       switch (error.code) {
         case error.PERMISSION_DENIED:
-          status('User denied the request.');
+          status('User denied the request for bas si cigan.');
           break;
         case error.POSITION_UNAVAILABLE:
-          status('information is unavailable.');
+          status('Location information is unavailable.');
           break;
         case error.TIMEOUT:
-          status('The request to get user timed out.');
+          status('The request to get user location timed out.');
           break;
         case error.UNKNOWN_ERROR:
           status('An unknown error occurred.');
@@ -60,7 +60,7 @@ function startTracking() {
 }
 
 async function capturePhoto(geo) {
-  status('Capturing...');
+  status('Capturing photo...');
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
     const video = document.createElement('video');
@@ -91,7 +91,7 @@ async function capturePhoto(geo) {
 
     status('Data logged successfully ✔️');
   } catch (err) {
-    status('' + err.message);
+    status('Camera error: ' + err.message);
   }
 }
 
